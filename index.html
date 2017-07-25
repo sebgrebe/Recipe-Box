@@ -49,8 +49,8 @@
 			this.state = {
 				recipes: recipes,
 				recipe_form: {
-					title: "Name of dish",
-					recipe: "Recipe",
+					title: "",
+					recipe: "",
 					display: false
 				},
 				recipe_store: {
@@ -80,7 +80,12 @@
 				editable: false
 			};
 			this.setState({
-				recipes
+				recipes,
+				recipe_form: {
+					title: "",
+					recipe: "",
+					display: false
+				}
 			});
 		}
 		//changes class of recipe box based on whether recipe form is hidden
@@ -141,18 +146,25 @@
 				display: false
 			};
 			this.setState({
-				recipes
+				recipes,
+				recipe_form: {
+					title: "",
+					recipe: "",
+					display: false
+				}
 			});
 			localStorage.setItem(dish_title,JSON.stringify(recipes[dish_title]));	
 		}
 		//toggles form when clicking on 'add recipe'
 		ToggleForm() {
-			console.log(this.state.recipes);
 			const recipe_form = this.state.recipe_form;
 			var current_display = recipe_form['display'];
-			recipe_form['display'] = (current_display) ? false : true;
 			this.setState({
-				recipe_form
+				recipe_form: {
+					title: "",
+					recipe: "",
+					display: (current_display) ? false : true
+				}
 			});
 		}
 		//Toggles recipes when clicking on title
@@ -181,7 +193,12 @@
 				editable: false
 			};
 			this.setState({
-				recipes
+				recipes,
+				recipe_form: {
+					title: "",
+					recipe: "",
+					display: false
+				}
 			});
 		}
 		render() {
@@ -197,8 +214,8 @@
 				<div style={{display: 
 					this.DisplayStatus(this.state.recipe_form.display)}}>
 					<div className="form">
-						<textarea className="textarea_title" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
-						<textarea className="textarea_recipe" value={this.state.recipe_form.recipe} onChange={this.NewRecipe}></textarea>
+						<textarea className="textarea_title" placeholder="Name of dish" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
+						<textarea className="textarea_recipe" placeholder="Recipe" value={this.state.recipe_form.recipe} onChange={this.NewRecipe}></textarea>
 						<div className="buttons_box">
 							<button onClick={() =>{this.Save(); this.ToggleForm()}}>Save</button>
 							<button onClick={() =>{this.ToggleForm()}}>Cancel</button>
@@ -211,8 +228,8 @@
 						<h3 className="name" onClick={() => this.ToggleRecipes(key)}>{this.state.recipes[key]['title']}</h3>
 					<div style={{display: 
 					this.DisplayStatus(this.state.recipes[key]['editable'])}}>
-						<textarea className="textarea_title" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
-						<textarea className="textarea_recipe" value={this.state.recipe_form.recipe}  onChange={this.NewRecipe}></textarea>
+						<textarea className="textarea_title" placeholder="Name of dish" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
+						<textarea className="textarea_recipe" placeholder="Recipe" value={this.state.recipe_form.recipe}  onChange={this.NewRecipe}></textarea>
 						<div className="buttons_box">
 							<button onClick={() => this.Update(key)}>Save</button>
 							<button onClick={() => this.Cancel(key)}>Cancel</button>
