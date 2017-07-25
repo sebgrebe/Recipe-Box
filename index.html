@@ -29,21 +29,25 @@
 	class RecipeBox extends React.Component {
 		constructor(props) {
 			super(props);
+			localStorage.setItem('brussel_sprouts', JSON.stringify({
+				title: 'Brussel Sprouts Pasta',
+				recipe: 'Brussel Sprouts, Haloumi, Pasta',
+				display: false,
+				editable: false
+			}));
+			localStorage.setItem('vietnamese_salad', JSON.stringify({
+				title: 'Vietnamese Salad',
+				recipe: 'Tofu, Carrots, Cucumber, Noodles',
+				display: false,
+				editable: false
+			}));
+			const recipes = {};
+			//turns localStorage, which can only accept key-value pairs of string into object
+			Object.keys(localStorage).map((key) => {
+				recipes[key] = JSON.parse(localStorage.getItem(key))
+			});
 			this.state = {
-				recipes: {
-					brussel_sprouts: {
-						title: 'Brussel Sprouts Pasta',
-						recipe: 'Brussel Sprouts, Haloumi, Pasta',
-						display: false,
-						editable: false
-					},
-					viet_salad: {
-						title: 'Vietnamese Salad',
-						recipe: 'Carrots, cucumber, sprouts, tofu',
-						display: false,
-						editable: false
-					}
-				},
+				recipes: recipes,
 				recipe_form: {
 					title: "Name of dish",
 					recipe: "Recipe",
@@ -90,6 +94,7 @@
 			this.setState({
 				recipes
 			});
+			localStorage.removeItem(key);
 		}
 		//toggles display property of form for editing existing recipe
 		DisplayStatus(arg) {
@@ -137,10 +142,12 @@
 			};
 			this.setState({
 				recipes
-			});	
+			});
+			localStorage.setItem(dish_title,JSON.stringify(recipes[dish_title]));	
 		}
 		//toggles form when clicking on 'add recipe'
 		ToggleForm() {
+			console.log(this.state.recipes);
 			const recipe_form = this.state.recipe_form;
 			var current_display = recipe_form['display'];
 			recipe_form['display'] = (current_display) ? false : true;
