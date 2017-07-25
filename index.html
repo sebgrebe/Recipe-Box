@@ -228,8 +228,10 @@
 						<h3 className="name" onClick={() => this.ToggleRecipes(key)}>{this.state.recipes[key]['title']}</h3>
 					<div style={{display: 
 					this.DisplayStatus(this.state.recipes[key]['editable'])}}>
+					<div className="recipe_edit">
 						<textarea className="textarea_title" placeholder="Name of dish" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
 						<textarea className="textarea_recipe" placeholder="Recipe" value={this.state.recipe_form.recipe}  onChange={this.NewRecipe}></textarea>
+					</div>
 						<div className="buttons_box">
 							<button onClick={() => this.Update(key)}>Save</button>
 							<button onClick={() => this.Cancel(key)}>Cancel</button>
