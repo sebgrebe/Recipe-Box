@@ -71,7 +71,7 @@
 			const recipe_store = this.state.recipe_store;
 			recipes[key] = {
 				title: recipe_store.title,
-				recipe: recipe_store.title,
+				recipe: recipe_store.recipe,
 				display: false,
 				editable: false
 			};
@@ -97,6 +97,8 @@
 		}
 		//edits existing recipe. Stores existing recipe in recipe_store during editing.
 		Edit(key) {
+			const recipes = this.state.recipes;
+			const recipe_store = this.state.recipe_store;
 			recipe_store.title = recipes[key]['title'];
 			recipe_store.recipe = recipes[key]['recipe'];
 			this.setState({
@@ -188,14 +190,12 @@
 				<div style={{display: 
 					this.DisplayStatus(this.state.recipe_form.display)}}>
 					<div className="form">
-					<form>
-						<textarea value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
-						<textarea value={this.state.recipe_form.recipe} onChange={this.NewRecipe}></textarea>
-					</form>
-					<div className="buttons_box">
-						<button onClick={() =>{this.Save(); this.ToggleForm()}}>Save</button>
-						<button onClick={() =>{this.ToggleForm()}}>Cancel</button>
-					</div>
+						<textarea className="textarea_title" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
+						<textarea className="textarea_recipe" value={this.state.recipe_form.recipe} onChange={this.NewRecipe}></textarea>
+						<div className="buttons_box">
+							<button onClick={() =>{this.Save(); this.ToggleForm()}}>Save</button>
+							<button onClick={() =>{this.ToggleForm()}}>Cancel</button>
+						</div>
 					</div>
 				</div>			
 				<div className={this.ClassRecipeForm(this.state.recipe_form.display)}>
@@ -204,8 +204,8 @@
 						<h3 className="name" onClick={() => this.ToggleRecipes(key)}>{this.state.recipes[key]['title']}</h3>
 					<div style={{display: 
 					this.DisplayStatus(this.state.recipes[key]['editable'])}}>
-						<textarea value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
-						<textarea value={this.state.recipe_form.recipe}  onChange={this.NewRecipe}></textarea>
+						<textarea className="textarea_title" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
+						<textarea className="textarea_recipe" value={this.state.recipe_form.recipe}  onChange={this.NewRecipe}></textarea>
 						<div className="buttons_box">
 							<button onClick={() => this.Update(key)}>Save</button>
 							<button onClick={() => this.Cancel(key)}>Cancel</button>

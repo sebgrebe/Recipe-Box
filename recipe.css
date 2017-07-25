@@ -34,8 +34,9 @@ footer {
 
 .button_add {
 	width: 120px;
+	font-size: 16px;
 	margin-right: 0px;
-	line-height: 30px;
+	line-height: 15px;
 	display: inline-block;
 }
 
@@ -50,13 +51,14 @@ footer {
 	text-align: center;
 	background-color: #34495e;
 	font-size: 16px;
-	height: 30%;
-	min-height: 160px;
+	height: 30vh;
+	min-height: 120px;
 	width: 400px;
 	border-radius: 10px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 0;
+	overflow: scroll;
 }
 
 .recipes_without_form {
@@ -76,13 +78,23 @@ footer {
 	margin-left: auto;
 	margin-right: auto;
 	width: 400px;
-	height: 70%;
+	height: 55vh;
 	background-color: #FFDC00;
 	border-radius: 10px;
 	font-size: 16px;
 	padding-left: 10px;
 	padding-top: 10px;
 	overflow: scroll;
+}
+
+.textarea_title {
+	height: 5vh;
+	min-height: 25px;
+}
+
+.textarea_recipe {
+	height: 16vh;
+	min-height: 25px;
 }
 
 .head {
