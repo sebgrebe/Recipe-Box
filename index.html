@@ -227,14 +227,15 @@
 		}
 		render() {
 			return (
-				<div className="container">
-				<div className="head">
+				<div className="container-fluid">
+				<div className="head col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
 				<div className='title'>Recipe Box</div>
 				<div style={{float: 'right'}}>
 				<button className="button_add" onClick={this.ToggleForm}>Add Recipe</button>
 				</div>
 				</div>
-				<div className="box">
+				<div className="row">
+				<div className="box col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
 				<div style={{display: 
 					this.DisplayStatus(this.state.recipe_form.display)}}>
 					<div className="form">
@@ -272,6 +273,7 @@
 						</div>
 						</div>
 						</div>)}
+				</div>
 				</div>
 				</div>
 				<footer>
