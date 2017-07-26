@@ -29,18 +29,20 @@
 	class RecipeBox extends React.Component {
 		constructor(props) {
 			super(props);
-			localStorage.setItem('brussel_sprouts', JSON.stringify({
-				title: 'Brussel Sprouts Pasta',
-				recipe: 'Brussel Sprouts, Haloumi, Pasta',
-				display: false,
-				editable: false
-			}));
-			localStorage.setItem('vietnamese_salad', JSON.stringify({
-				title: 'Vietnamese Salad',
-				recipe: 'Tofu, Carrots, Cucumber, Noodles',
-				display: false,
-				editable: false
-			}));
+			if (localStorage.length === 0) {
+				localStorage.setItem('Brussel Sprouts Pasta', JSON.stringify({
+					title: 'Brussel Sprouts Pasta',
+					recipe: 'Brussel Sprouts, Haloumi, Pasta',
+					display: false,
+					editable: false
+				}));
+				localStorage.setItem('Vietnamese Salad', JSON.stringify({
+					title: 'Vietnamese Salad',
+					recipe: 'Tofu, Carrots, Cucumber, Noodles',
+					display: false,
+					editable: false
+				}));
+			}
 			const recipes = {};
 			//turns localStorage, which can only accept key-value pairs of string into object
 			Object.keys(localStorage).map((key) => {
@@ -55,9 +57,7 @@
 				},
 				recipe_store: {
 					title: "",
-					recipe: "",
-					display: false,
-					editable: false
+					recipe: ""
 				}
 			};
 			this.ToggleRecipes = this.ToggleRecipes.bind(this);
@@ -85,6 +85,10 @@
 					title: "",
 					recipe: "",
 					display: false
+				},
+				recipe_store: {
+					title: "",
+					recipe: ""
 				}
 			});
 		}
@@ -115,11 +119,29 @@
 				recipe_store
 			})
 			recipes[key]['editable'] = true;
+			recipes[key]['display'] = false;
 			this.setState({
 				recipes
 			});
 		}
-		//updates recipe when editing
+		//updates state when editing existing recipe
+		EditRecipe(key,e) {
+			const recipes = this.state.recipes;
+			recipes[key]['recipe'] = e.target.value;
+			this.setState({
+				recipes
+			});
+			console.log(recipes)
+		}
+		//updates state when editing existing title
+		EditTitle(key, e) {
+			const recipes = this.state.recipes;
+			recipes[key]['title'] = e.target.value;
+			this.setState({
+				recipes
+			});
+		}
+		//updates recipe_form when creating new recipe
 		NewRecipe(event) {
 			const recipe_form = this.state.recipe_form;
 			recipe_form.recipe = event.target.value;
@@ -127,7 +149,7 @@
 				recipe_form
 			});
 		}
-		//updates title of recipe when editing
+		//updates recipe_form when creating new title
 		NewTitle(event) {
 			const recipe_form = this.state.recipe_form;
 			recipe_form.title = event.target.value;
@@ -140,20 +162,25 @@
 			var dish_title = this.state.recipe_form.title;
 			var dish_recipe = this.state.recipe_form.recipe;
 			const recipes = this.state.recipes;
-			recipes[dish_title] = {
-				title: dish_title,
-				recipe: dish_recipe,
-				display: false
-			};
-			this.setState({
-				recipes,
-				recipe_form: {
-					title: "",
-					recipe: "",
+			if (dish_title === "") {
+				return false;
+			}
+			else {
+				recipes[dish_title] = {
+					title: dish_title,
+					recipe: dish_recipe,
 					display: false
-				}
-			});
-			localStorage.setItem(dish_title,JSON.stringify(recipes[dish_title]));	
+				};
+				this.setState({
+					recipes,
+					recipe_form: {
+						title: "",
+						recipe: "",
+						display: false
+					}
+				});
+				localStorage.setItem(dish_title,JSON.stringify(recipes[dish_title]));
+			}
 		}
 		//toggles form when clicking on 'add recipe'
 		ToggleForm() {
@@ -171,11 +198,11 @@
 		ToggleRecipes(key) {
 			const recipes = this.state.recipes;
 			var current_display = recipes[key]['display'];
-			recipes[key]['display'] = (current_display) ? false : true;
-			if (recipes[key]['editable'] === true) {
-				return false
+			if (recipes[key]['editable']) {
+				this.Cancel(key);
 			}
 			else {
+				recipes[key]['display'] = (current_display) ? false : true;
 				this.setState({
 					recipes
 				});	
@@ -183,23 +210,20 @@
 		}
 		//saves changes to existing recipe
 		Update(key) {
-			const update_title = this.state.recipe_form.title;
-			const update_recipe = this.state.recipe_form.recipe;
+			const update_title = this.state.recipes[key]['title'];
 			const recipes = this.state.recipes;
-			recipes[key] = {
-				title: update_title,
-				recipe: update_recipe,
-				display: false,
-				editable: false
-			};
+			const recipe_store = this.state.recipe_store;
+			recipes[key]['editable'] = false;
+			recipes[key]['display'] = false;
+			localStorage.removeItem(recipe_store.title);
 			this.setState({
 				recipes,
-				recipe_form: {
+				recipe_store: {
 					title: "",
-					recipe: "",
-					display: false
+					recipe: ""
 				}
 			});
+			localStorage.setItem(update_title,JSON.stringify(recipes[key]));
 		}
 		render() {
 			return (
@@ -229,8 +253,8 @@
 					<div style={{display: 
 					this.DisplayStatus(this.state.recipes[key]['editable'])}}>
 					<div className="recipe_edit">
-						<textarea className="textarea_title" placeholder="Name of dish" value={this.state.recipe_form.title} onChange={this.NewTitle}></textarea>
-						<textarea className="textarea_recipe" placeholder="Recipe" value={this.state.recipe_form.recipe}  onChange={this.NewRecipe}></textarea>
+						<textarea className="textarea_title" value={this.state.recipes[key]['title']} onChange={(e) => this.EditTitle(key, e)}></textarea>
+						<textarea className="textarea_recipe" value={this.state.recipes[key]['recipe']}  onChange={(e) => this.EditRecipe(key, e)}></textarea>
 					</div>
 						<div className="buttons_box">
 							<button onClick={() => this.Update(key)}>Save</button>
@@ -243,7 +267,7 @@
 							<div className="recipes">{this.state.recipes[key]['recipe']}</div>
 							<div className="buttons_box">
 								<button onClick={() => this.Delete(key)}>Delete</button>
-								<button onClick={() => {this.Edit(key); this.ToggleRecipes(key)}}>Edit</button>
+								<button onClick={() => {this.Edit(key)}}>Edit</button>
 							</div>
 						</div>
 						</div>
