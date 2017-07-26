@@ -228,14 +228,14 @@
 		render() {
 			return (
 				<div className="container-fluid">
-				<div className="head col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
-				<div className='title'>Recipe Box</div>
-				<div style={{float: 'right'}}>
-				<button className="button_add" onClick={this.ToggleForm}>Add Recipe</button>
+				<div className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+				<div className="head row">
+				<div className='col-xs-7 title'>Recipe Box</div>
+				<div className='col-xs-5'>
+					<button className="button_add" onClick={this.ToggleForm}>Add Recipe</button>
 				</div>
 				</div>
-				<div className="row">
-				<div className="box col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+				<div className="row box">
 				<div style={{display: 
 					this.DisplayStatus(this.state.recipe_form.display)}}>
 					<div className="form">
@@ -275,11 +275,11 @@
 						</div>)}
 				</div>
 				</div>
-				</div>
 				<footer>
 					<div>Created by <a href="https://sebgrebe.github.io/">sebgrebe</a> with <a href="https://facebook.github.io/react/"><img src="reactlogo.png" height="28px" /></a>
 					</div>
 				</footer>
+				</div>
 				</div>
 		)}
 	}
